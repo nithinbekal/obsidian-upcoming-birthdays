@@ -183,14 +183,14 @@ class BirthdayView extends ItemView {
       
       const dateStr = birthday.nextBirthday.toLocaleDateString('en-US', { 
         month: 'short', 
-        day: 'numeric' 
+        day: '2-digit' 
       });
       
-      let prefix = '';
+      let datePrefix = '';
       let itemClass = 'birthday-later';
       
       if (birthday.daysUntil === 0) {
-        prefix = '🎉 ';
+        datePrefix = '🎉 ';
         itemClass = 'birthday-today';
       } else if (birthday.daysUntil <= 7) {
         itemClass = 'birthday-soon';
@@ -198,9 +198,11 @@ class BirthdayView extends ItemView {
       
       item.addClass(itemClass);
       
-      // Name (clickable)
-      const nameEl = item.createEl('a', { 
-        text: `${prefix}${birthday.name}`,
+      // Left side: Name and age
+      const leftSide = item.createEl('div', { cls: 'birthday-left' });
+      
+      const nameEl = leftSide.createEl('a', { 
+        text: birthday.name,
         cls: 'birthday-name'
       });
       nameEl.addEventListener('click', (e) => {
@@ -208,11 +210,18 @@ class BirthdayView extends ItemView {
         this.app.workspace.getLeaf(false).openFile(birthday.file);
       });
       
-      // Date and age (only show age if in valid range)
-      const ageStr = (birthday.age >= 0 && birthday.age <= 120) ? ` - ${birthday.age}` : '';
+      // Age (only show if in valid range)
+      if (birthday.age >= 0 && birthday.age <= 120) {
+        leftSide.createEl('span', { 
+          text: ` (${birthday.age})`,
+          cls: 'birthday-age'
+        });
+      }
+      
+      // Right side: Date (monospace)
       item.createEl('span', { 
-        text: ` (${dateStr}${ageStr})`,
-        cls: 'birthday-date-info'
+        text: `${datePrefix}${dateStr}`,
+        cls: 'birthday-date'
       });
     }
   }
