@@ -31,11 +31,6 @@ export default class BirthdayPlugin extends Plugin {
 			(leaf) => new BirthdayView(leaf, this)
 		);
 
-		// Add ribbon icon to open birthday view
-		this.addRibbonIcon('cake', 'Birthday Plugin', () => {
-			this.activateView();
-		});
-
 		// Add command to open birthday view
 		this.addCommand({
 			id: 'open-birthday-view',
@@ -165,6 +160,12 @@ class BirthdayView extends ItemView {
 		container.empty();
 		container.addClass('birthday-view-container');
 
+		// Add heading
+		container.createEl('h4', { 
+			text: '🎂 Upcoming birthdays',
+			cls: 'birthday-heading'
+		});
+
 		const birthdays = await this.plugin.getBirthdays();
 
 		if (birthdays.length === 0) {
@@ -180,45 +181,39 @@ class BirthdayView extends ItemView {
 		for (const birthday of birthdays) {
 			const item = list.createEl('div', { cls: 'birthday-item' });
 			
+			const dateStr = birthday.nextBirthday.toLocaleDateString('en-US', { 
+				month: 'short', 
+				day: 'numeric' 
+			});
+			
+			let prefix = '';
+			let itemClass = 'birthday-later';
+			
+			if (birthday.daysUntil === 0) {
+				prefix = '🎉 ';
+				itemClass = 'birthday-today';
+			} else if (birthday.daysUntil <= 7) {
+				itemClass = 'birthday-soon';
+			}
+			
+			item.addClass(itemClass);
+			
 			// Name (clickable)
 			const nameEl = item.createEl('a', { 
-				text: birthday.name,
+				text: `${prefix}${birthday.name}`,
 				cls: 'birthday-name'
 			});
 			nameEl.addEventListener('click', (e) => {
 				e.preventDefault();
 				this.app.workspace.getLeaf(false).openFile(birthday.file);
 			});
-
-			// Date info
-			const dateInfo = item.createEl('div', { cls: 'birthday-date-info' });
 			
-			const dateStr = birthday.nextBirthday.toLocaleDateString('en-US', { 
-				month: 'short', 
-				day: 'numeric' 
+			// Date and age (only show age if in valid range)
+			const ageStr = (birthday.age >= 0 && birthday.age <= 120) ? ` - ${birthday.age}` : '';
+			item.createEl('span', { 
+				text: ` (${dateStr}${ageStr})`,
+				cls: 'birthday-date-info'
 			});
-			
-			if (birthday.daysUntil === 0) {
-				dateInfo.createEl('span', { 
-					text: `🎉 Today - ${dateStr} (${birthday.age} years old)`,
-					cls: 'birthday-today'
-				});
-			} else if (birthday.daysUntil === 1) {
-				dateInfo.createEl('span', { 
-					text: `Tomorrow - ${dateStr} (turning ${birthday.age})`,
-					cls: 'birthday-soon'
-				});
-			} else if (birthday.daysUntil <= 7) {
-				dateInfo.createEl('span', { 
-					text: `In ${birthday.daysUntil} days - ${dateStr} (turning ${birthday.age})`,
-					cls: 'birthday-soon'
-				});
-			} else {
-				dateInfo.createEl('span', { 
-					text: `In ${birthday.daysUntil} days - ${dateStr} (turning ${birthday.age})`,
-					cls: 'birthday-later'
-				});
-			}
 		}
 	}
 

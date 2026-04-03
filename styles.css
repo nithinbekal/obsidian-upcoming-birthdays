@@ -1,56 +1,57 @@
 .birthday-view-container {
-	padding: 10px;
+  padding: 8px;
+}
+
+.birthday-heading {
+  margin: 20px 0;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--text-normal);
 }
 
 .birthday-list {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .birthday-item {
-	padding: 12px;
-	border-radius: 6px;
-	background-color: var(--background-secondary);
-	border: 1px solid var(--background-modifier-border);
+  padding: 3px 8px;
+  font-size: 0.9em;
+  line-height: 1.4;
 }
 
 .birthday-name {
-	font-weight: 600;
-	font-size: 1.1em;
-	color: var(--text-normal);
-	cursor: pointer;
-	text-decoration: none;
-	display: block;
-	margin-bottom: 4px;
+  font-weight: 500;
+  color: var(--text-normal);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .birthday-name:hover {
-	color: var(--text-accent);
-	text-decoration: underline;
+  color: var(--text-accent);
+  text-decoration: underline;
 }
 
 .birthday-date-info {
-	font-size: 0.9em;
-	color: var(--text-muted);
+  color: var(--text-muted);
 }
 
-.birthday-today {
-	color: var(--text-error);
-	font-weight: 600;
+.birthday-today .birthday-name {
+  color: var(--text-error);
+  font-weight: 600;
 }
 
-.birthday-soon {
-	color: var(--text-accent);
-	font-weight: 500;
+.birthday-soon .birthday-name {
+  color: var(--text-accent);
 }
 
-.birthday-later {
-	color: var(--text-muted);
+.birthday-later .birthday-name {
+  color: var(--text-normal);
 }
 
 .birthday-empty {
-	text-align: center;
-	color: var(--text-muted);
-	padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 20px;
 }
