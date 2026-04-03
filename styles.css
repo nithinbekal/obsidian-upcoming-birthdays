@@ -1,0 +1,56 @@
+.birthday-view-container {
+	padding: 10px;
+}
+
+.birthday-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.birthday-item {
+	padding: 12px;
+	border-radius: 6px;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+}
+
+.birthday-name {
+	font-weight: 600;
+	font-size: 1.1em;
+	color: var(--text-normal);
+	cursor: pointer;
+	text-decoration: none;
+	display: block;
+	margin-bottom: 4px;
+}
+
+.birthday-name:hover {
+	color: var(--text-accent);
+	text-decoration: underline;
+}
+
+.birthday-date-info {
+	font-size: 0.9em;
+	color: var(--text-muted);
+}
+
+.birthday-today {
+	color: var(--text-error);
+	font-weight: 600;
+}
+
+.birthday-soon {
+	color: var(--text-accent);
+	font-weight: 500;
+}
+
+.birthday-later {
+	color: var(--text-muted);
+}
+
+.birthday-empty {
+	text-align: center;
+	color: var(--text-muted);
+	padding: 20px;
+}
