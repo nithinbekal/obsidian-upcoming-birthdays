@@ -1,4 +1,4 @@
-# Obsidian Birthday Plugin
+# Obsidian Upcoming Birthdays
 
 A plugin for Obsidian that tracks and displays upcoming birthdays from your notes.
 
