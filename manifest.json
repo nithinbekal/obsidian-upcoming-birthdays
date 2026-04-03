@@ -1,6 +1,6 @@
 {
   "id": "birthday-plugin",
-  "name": "Birthday Plugin",
+  "name": "Upcoming Birthdays",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
   "description": "Show upcoming birthdays from notes with date-of-birth attributes",
