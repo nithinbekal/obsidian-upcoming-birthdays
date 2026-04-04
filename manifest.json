@@ -1,10 +1,10 @@
 {
-  "id": "birthday-plugin",
+  "id": "upcoming-birthdays",
   "name": "Upcoming Birthdays",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
   "description": "Show upcoming birthdays from notes with date-of-birth attributes",
   "author": "Nithin Bekal",
-  "authorUrl": "https://github.com/nithinbekal/obsidian-birthday-plugin",
+  "authorUrl": "https://github.com/nithinbekal/obsidian-upcoming-birthdays",
   "isDesktopOnly": false
 }
