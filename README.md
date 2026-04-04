@@ -28,8 +28,7 @@ Contact information and other details...
 
 ### Viewing Birthdays
 
-1. Click the cake icon 🎂 in the left ribbon, or
-2. Use the command palette (Ctrl/Cmd + P) and search for "Open Birthday View"
+Use the command palette (Ctrl/Cmd + P) and search for "Open Birthday View"
 
 The birthday view will appear in the right sidebar showing:
 - Birthdays happening today (highlighted)
@@ -49,12 +48,12 @@ The birthday view will appear in the right sidebar showing:
 1. Clone this repository into your vault's `.obsidian/plugins/` folder:
    ```bash
    cd /path/to/vault/.obsidian/plugins
-   git clone https://github.com/yourusername/obsidian-birthday-plugin.git
+   git clone https://github.com/nithinbekal/obsidian-upcoming-birthdays.git
    ```
 
 2. Install dependencies:
    ```bash
-   cd obsidian-birthday-plugin
+   cd obsidian-upcoming-birthdays
    npm install
    ```
 
