@@ -3,7 +3,7 @@
   "name": "Upcoming Birthdays",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
-  "description": "Show upcoming birthdays from notes with date-of-birth attributes",
+  "description": "Show upcoming birthdays from notes with date-of-birth attributes.",
   "author": "Nithin Bekal",
   "authorUrl": "https://github.com/nithinbekal/obsidian-upcoming-birthdays",
   "isDesktopOnly": false
