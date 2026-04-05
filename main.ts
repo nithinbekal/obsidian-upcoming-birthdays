@@ -34,9 +34,9 @@ export default class BirthdayPlugin extends Plugin {
     // Add command to open birthday view
     this.addCommand({
       id: 'open-birthday-view',
-      name: 'Open Birthday View',
+      name: 'Open birthday view',
       callback: () => {
-        this.activateView();
+        void this.activateView();
       }
     });
 
@@ -62,7 +62,7 @@ export default class BirthdayPlugin extends Plugin {
     }
 
     if (leaf) {
-      workspace.revealLeaf(leaf);
+      void workspace.revealLeaf(leaf);
     }
   }
 
@@ -74,7 +74,7 @@ export default class BirthdayPlugin extends Plugin {
     await this.saveData(this.settings);
   }
 
-  async getBirthdays(): Promise<Birthday[]> {
+  getBirthdays(): Birthday[] {
     const birthdays: Birthday[] = [];
     const files = this.app.vault.getMarkdownFiles();
     const today = new Date();
@@ -137,7 +137,7 @@ class BirthdayView extends ItemView {
   }
 
   getDisplayText(): string {
-    return 'Upcoming Birthdays';
+    return 'Upcoming birthdays';
   }
 
   getIcon(): string {
@@ -145,12 +145,12 @@ class BirthdayView extends ItemView {
   }
 
   async onOpen() {
-    await this.render();
+    void this.render();
 
     // Re-render when files are modified
     this.registerEvent(
       this.app.metadataCache.on('changed', () => {
-        this.render();
+        void this.render();
       })
     );
   }
@@ -166,7 +166,7 @@ class BirthdayView extends ItemView {
       cls: 'birthday-heading'
     });
 
-    const birthdays = await this.plugin.getBirthdays();
+    const birthdays = this.plugin.getBirthdays();
 
     if (birthdays.length === 0) {
       container.createEl('p', { 
@@ -207,7 +207,7 @@ class BirthdayView extends ItemView {
       });
       nameEl.addEventListener('click', (e) => {
         e.preventDefault();
-        this.app.workspace.getLeaf(false).openFile(birthday.file);
+        void this.app.workspace.getLeaf(false).openFile(birthday.file);
       });
       
       // Age (only show if in valid range)
@@ -243,10 +243,12 @@ class BirthdaySettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    containerEl.createEl('h2', { text: 'Birthday Plugin Settings' });
+    new Setting(containerEl)
+      .setName('Birthday plugin settings')
+      .setHeading();
 
     new Setting(containerEl)
-      .setName('Date of Birth Property')
+      .setName('Date of birth property')
       .setDesc('The frontmatter property name that contains the date of birth')
       .addText(text => text
         .setPlaceholder('date-of-birth')
@@ -257,7 +259,7 @@ class BirthdaySettingTab extends PluginSettingTab {
         }));
 
     new Setting(containerEl)
-      .setName('Days to Look Ahead')
+      .setName('Days to look ahead')
       .setDesc('How many days in advance to show upcoming birthdays')
       .addText(text => text
         .setPlaceholder('30')
