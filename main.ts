@@ -145,17 +145,17 @@ class BirthdayView extends ItemView {
   }
 
   async onOpen() {
-    void this.render();
+    this.render();
 
     // Re-render when files are modified
     this.registerEvent(
       this.app.metadataCache.on('changed', () => {
-        void this.render();
+        this.render();
       })
     );
   }
 
-  async render() {
+  render() {
     const container = this.containerEl.children[1];
     container.empty();
     container.addClass('birthday-view-container');
@@ -244,7 +244,7 @@ class BirthdaySettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setName('Birthday plugin settings')
+      .setName('Birthday plugin')
       .setHeading();
 
     new Setting(containerEl)
