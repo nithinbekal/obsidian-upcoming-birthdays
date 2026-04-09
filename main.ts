@@ -88,11 +88,11 @@ export default class BirthdayPlugin extends Plugin {
       if (!dobValue) continue;
 
       try {
-        const dob = new Date(dobValue);
-        if (isNaN(dob.getTime())) continue;
+        const { year: dobYear, month: dobMonth, day: dobDay } = this.parseDateParts(dobValue);
+        if (dobYear === null) continue;
 
         // Calculate next birthday
-        const nextBirthday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
+        const nextBirthday = new Date(today.getFullYear(), dobMonth, dobDay);
         if (nextBirthday < today) {
           nextBirthday.setFullYear(today.getFullYear() + 1);
         }
@@ -101,11 +101,11 @@ export default class BirthdayPlugin extends Plugin {
 
         // Only include if within the configured range
         if (daysUntil <= this.settings.daysToLookAhead) {
-          const age = nextBirthday.getFullYear() - dob.getFullYear();
+          const age = nextBirthday.getFullYear() - dobYear;
 
           birthdays.push({
             name: file.basename,
-            dateOfBirth: dob,
+            dateOfBirth: new Date(dobYear, dobMonth, dobDay),
             nextBirthday,
             daysUntil,
             age,
@@ -121,6 +121,22 @@ export default class BirthdayPlugin extends Plugin {
     birthdays.sort((a, b) => a.daysUntil - b.daysUntil);
 
     return birthdays;
+  }
+
+  private parseDateParts(value: unknown): { year: number | null; month: number; day: number } {
+    const nil = { year: null, month: 0, day: 0 };
+
+    if (typeof value === 'string') {
+      const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (!match) return nil;
+      return { year: parseInt(match[1]), month: parseInt(match[2]) - 1, day: parseInt(match[3]) };
+    }
+
+    if (value instanceof Date && !isNaN(value.getTime())) {
+      return { year: value.getUTCFullYear(), month: value.getUTCMonth(), day: value.getUTCDate() };
+    }
+
+    return nil;
   }
 }
 
