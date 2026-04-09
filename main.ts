@@ -46,7 +46,7 @@ export default class BirthdayPlugin extends Plugin {
 
   async activateView() {
     const { workspace } = this.app;
-    
+
     let leaf: WorkspaceLeaf | null = null;
     const leaves = workspace.getLeavesOfType('birthday-view');
 
@@ -102,7 +102,7 @@ export default class BirthdayPlugin extends Plugin {
         // Only include if within the configured range
         if (daysUntil <= this.settings.daysToLookAhead) {
           const age = nextBirthday.getFullYear() - dob.getFullYear();
-          
+
           birthdays.push({
             name: file.basename,
             dateOfBirth: dob,
@@ -144,7 +144,7 @@ class BirthdayView extends ItemView {
     return 'cake';
   }
 
-  async onOpen() {
+  onOpen(): Promise<void> {
     this.render();
 
     // Re-render when files are modified
@@ -153,6 +153,7 @@ class BirthdayView extends ItemView {
         this.render();
       })
     );
+    return Promise.resolve();
   }
 
   render() {
@@ -161,15 +162,15 @@ class BirthdayView extends ItemView {
     container.addClass('birthday-view-container');
 
     // Add heading
-    container.createEl('h4', { 
-      text: '🎂 Upcoming birthdays',
+    container.createEl('h4', {
+      text: 'Upcoming birthdays',
       cls: 'birthday-heading'
     });
 
     const birthdays = this.plugin.getBirthdays();
 
     if (birthdays.length === 0) {
-      container.createEl('p', { 
+      container.createEl('p', {
         text: 'No upcoming birthdays found.',
         cls: 'birthday-empty'
       });
@@ -180,28 +181,28 @@ class BirthdayView extends ItemView {
 
     for (const birthday of birthdays) {
       const item = list.createEl('div', { cls: 'birthday-item' });
-      
-      const dateStr = birthday.nextBirthday.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: '2-digit' 
+
+      const dateStr = birthday.nextBirthday.toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit'
       });
-      
+
       let datePrefix = '';
       let itemClass = 'birthday-later';
-      
+
       if (birthday.daysUntil === 0) {
         datePrefix = '🎉 ';
         itemClass = 'birthday-today';
       } else if (birthday.daysUntil <= 7) {
         itemClass = 'birthday-soon';
       }
-      
+
       item.addClass(itemClass);
-      
+
       // Left side: Name and age
       const leftSide = item.createEl('div', { cls: 'birthday-left' });
-      
-      const nameEl = leftSide.createEl('a', { 
+
+      const nameEl = leftSide.createEl('a', {
         text: birthday.name,
         cls: 'birthday-name'
       });
@@ -209,25 +210,26 @@ class BirthdayView extends ItemView {
         e.preventDefault();
         void this.app.workspace.getLeaf(false).openFile(birthday.file);
       });
-      
+
       // Age (only show if in valid range)
       if (birthday.age >= 0 && birthday.age <= 120) {
-        leftSide.createEl('span', { 
+        leftSide.createEl('span', {
           text: ` (${birthday.age})`,
           cls: 'birthday-age'
         });
       }
-      
+
       // Right side: Date (monospace)
-      item.createEl('span', { 
+      item.createEl('span', {
         text: `${datePrefix}${dateStr}`,
         cls: 'birthday-date'
       });
     }
   }
 
-  async onClose() {
+  onClose(): Promise<void> {
     // Cleanup if needed
+    return Promise.resolve();
   }
 }
 
@@ -251,7 +253,6 @@ class BirthdaySettingTab extends PluginSettingTab {
       .setName('Date of birth property')
       .setDesc('The frontmatter property name that contains the date of birth')
       .addText(text => text
-        .setPlaceholder('date-of-birth')
         .setValue(this.plugin.settings.dateOfBirthProperty)
         .onChange(async (value) => {
           this.plugin.settings.dateOfBirthProperty = value || 'date-of-birth';
